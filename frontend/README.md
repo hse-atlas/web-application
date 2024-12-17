@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# React OAuth Integration App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Это приложение на React, которое предоставляет функциональность для регистрации и входа через OAuth. Оно включает страницы для входа и регистрации с базовой валидацией и подтверждением пароля.
 
-## Available Scripts
+## Требования
 
-In the project directory, you can run:
+Для запуска приложения на локальной машине вам нужно установить следующие зависимости:
 
-### `npm start`
+- [Node.js](https://nodejs.org/) (рекомендуемая версия: 16.x или выше)
+- [npm](https://www.npmjs.com/) (обычно устанавливается вместе с Node.js)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Установка
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Склонируйте репозиторий на свою локальную машину:
 
-### `npm test`
+   ```bash
+   git clone https://github.com/hse-atlas/web-application.git
+   cd web-application/frontend
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Установите зависимости:
 
-### `npm run build`
+   ```bash
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Запуск приложения
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Для запуска приложения в режиме разработки используйте команду:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+Это откроет приложение в браузере по умолчанию на [http://localhost:3000](http://localhost:3000).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Структура проекта
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Вот как организована структура проекта:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+frontend/
+├── public/
+│   └── index.html               # Главная HTML страница
+├── src/
+│   ├── pages/              # Компоненты приложения
+│   │   ├── Login.js             # Страница логина
+│   │   ├── Register.js          # Страница регистрации
+│   │   └── ...
+│   ├── styles/                  # Стили
+│   │   ├── Login.css            # Стили для страницы логина
+│   │   ├── Register.css         # Стили для страницы регистрации
+│   │   └── ...
+│   ├── App.js                   # Главный компонент приложения
+│   ├── index.js                 # Точка входа в приложение
+│   └── ...
+├── .gitignore                   # Файл для игнорирования файлов в Git
+├── package.json                 # Зависимости и конфигурация проекта
+└── README.md                    # Документация для разработчиков
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Используемые технологии
 
-## Learn More
+- **React** — для построения пользовательского интерфейса
+- **Ant Design** — для компонентов UI
+- **React Router** — для маршрутизации
+- **CSS** — для стилизации приложения
+- **Normalize.css** — для нормализации стилей браузера
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Описание разделов:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Требования** — описываются зависимости, которые нужны для работы приложения.
+- **Установка** — инструкции по клонированию репозитория и установке зависимостей.
+- **Запуск приложения** — инструкции по запуску проекта на локальной машине.
+- **Структура проекта** — описание структуры папок и файлов, что поможет другим разработчикам понять, как организован проект.
+- **Используемые технологии** — список технологий, используемых в проекте.
