@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Project Alpha",
+    "description": "A project focused on AI research and development.",
+    "userCount": 2
+  },
+  {
+    "id": 2,
+    "name": "Project Beta",
+    "description": "A project for building a scalable e-commerce platform.",
+    "userCount": 1
+  },
+  {
+    "id": 3,
+    "name": "Project Gamma",
+    "description": "A project for creating a mobile app for health tracking.",
+    "userCount": 3
+  },
+  {
+    "id": 4,
+    "name": "Project Delta",
+    "description": "A project for developing a blockchain-based payment system.",
+    "userCount": 1
+  },
+  {
+    "id": 5,
+    "name": "Project Epsilon",
+    "description": "A project for creating a cloud-based file storage service.",
+    "userCount": 0
+  }
+]

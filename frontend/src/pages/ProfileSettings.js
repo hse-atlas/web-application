@@ -12,7 +12,6 @@ import {
 import {
   UserOutlined,
   MailOutlined,
-  LockOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom"; // Хук для навигации
@@ -108,20 +107,6 @@ const ProfileSettings = () => {
             ]}
           >
             <Input prefix={<MailOutlined />} placeholder="Enter your email" />
-          </Form.Item>
-
-          <Form.Item
-            name="password"
-            label="New Password"
-            rules={[
-              { required: true, message: "Please enter a new password!" },
-              { min: 6, message: "Password must be at least 6 characters!" },
-            ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Enter a new password"
-            />
           </Form.Item>
 
           <Form.Item>
