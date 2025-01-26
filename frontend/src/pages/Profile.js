@@ -6,16 +6,24 @@ import {
   EditOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; // Хук для навигации
+import { useNavigate } from "react-router-dom";
 import UserHeader from "../components/UserHeader";
 import DetailItem from "../components/DetailItem";
 import "../styles/Profile.css";
 
+// Константа с данными пользователя
+const userData = {
+  name: "John Doe",
+  username: "@johndoe",
+  email: "john.doe@example.com",
+  role: "Admin",
+};
+
 const Profile = () => {
-  const navigate = useNavigate(); // Инициализация хука для навигации
+  const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate(-1); // Возвращаемся на предыдущую страницу
+    navigate(-1);
   };
 
   const handleSettingsClick = () => {
@@ -25,25 +33,25 @@ const Profile = () => {
   return (
     <div className="profile-page-container">
       <Card className="profile-card">
-        {/* Кнопка назад */}
         <Button
           icon={<ArrowLeftOutlined />}
           onClick={handleBackClick}
           style={{ marginBottom: "20px" }}
         ></Button>
 
-        <UserHeader name="John Doe" username="@johndoe" />
+        {/* Используем данные из константы */}
+        <UserHeader name={userData.name} username={userData.username} />
 
         <Divider />
 
         <div className="profile-details">
           <DetailItem
             icon={<MailOutlined className="detail-icon" />}
-            label="Email: john.doe@example.com"
+            label={`Email: ${userData.email}`}
           />
           <DetailItem
             icon={<UserOutlined className="detail-icon" />}
-            label="Role: Admin"
+            label={`Role: ${userData.role}`}
           />
         </div>
 

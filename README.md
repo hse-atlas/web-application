@@ -8,6 +8,9 @@ This is the frontend of the OAuth Integration Service.
 - User Management Dashboard
 - Project Configuration
 
-## Links 
+## Links
+
 - [Description and instruction](frontend/README.md);
 - [Minimal requirements](<Minimal requirements.md>);
+
+## Screenshots

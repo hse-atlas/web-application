@@ -1,6 +1,7 @@
 /* Основной контейнер Main */
 .page-container{
     background-color: #f0f2f5; 
+    height: 100dvh;
 }
 .main-container {
     display: flex;
@@ -21,12 +22,11 @@
   /* Контейнер для проектов, занимающий почти всю высоту */
   .projects-container {
     flex: 1;
-  
     justify-content: center;
     align-items: center;
     border: 1px solid #d9d9d9;
-    border-radius: 8px;
+    border-radius: 8px 0;
     background-color: #fafafa;
-    min-height: calc(100dvh - 150px); /* Высота почти до конца страницы */
+    /* min-height: calc(100dvh - 150px); /* Высота почти до конца страницы */
     box-sizing: border-box; /* Учитываем padding в расчёте высоты */
   }
