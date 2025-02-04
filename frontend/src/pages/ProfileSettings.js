@@ -26,8 +26,8 @@ const ProfileSettings = () => {
 
   // Данные пользователя
   const userData = {
-    username: "john_doe",
-    email: "john.doe@example.com",
+    username: localStorage.getItem("Login"),
+    email: localStorage.getItem("Email"),
   };
 
   const onFinish = (values) => {

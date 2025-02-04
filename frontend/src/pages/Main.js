@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Table, Empty, Typography, Space, Button } from "antd";
+import { Table, Empty, Typography, Space, Button, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; // Добавляем useNavigate
+import { useNavigate } from "react-router-dom";
 import ProfileMenu from "../components/ProfileMenu";
 import AddProject from "../components/AddProject";
+import axios from "axios";
 import "../styles/Main.css";
 
 const { Title, Text } = Typography;
 
-const getProjectsFromLocalStorage = () => {
-  const projects = localStorage.getItem("projects");
-  return projects ? JSON.parse(projects) : [];
-};
-
-const saveProjectsToLocalStorage = (projects) => {
-  localStorage.setItem("projects", JSON.stringify(projects));
-};
-
 const Main = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [projects, setProjects] = useState(getProjectsFromLocalStorage());
-  const navigate = useNavigate(); // Инициализируем useNavigate
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const userEmail = "john.doe@example.com";
+  const userEmail = localStorage.getItem("Email");
   const userRole = "Admin";
 
+  const fetchProjects = () => {
+    setLoading(true);
+    axios
+      .get(`http://127.0.0.1:90/projects/me?email=${userEmail}`)
+      .then((response) => {
+        setProjects(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error.response?.data?.detail);
+        if (error.response?.status !== 404) {
+          // Показываем ошибку, только если это не 404 (проектов нет)
+          message.error("Failed to load projects.");
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   useEffect(() => {
-    const savedProjects = getProjectsFromLocalStorage();
-    setProjects(savedProjects);
-  }, []);
+    fetchProjects();
+  }, [userEmail]);
 
   const handleAddProjectClick = () => {
     setIsModalVisible(true);
@@ -38,41 +49,16 @@ const Main = () => {
     setIsModalVisible(false);
   };
 
-  const handleAddProject = (values) => {
-    const newProject = {
-      id: projects.length + 1,
-      name: values.name,
-      description: values.description,
-      userCount: 0,
-    };
-
-    const updatedProjects = [...projects, newProject];
-    setProjects(updatedProjects);
-    saveProjectsToLocalStorage(updatedProjects);
+  const handleAddProject = () => {
+    fetchProjects();
     setIsModalVisible(false);
   };
 
   const columns = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Project Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-    },
-    {
-      title: "Users",
-      dataIndex: "userCount",
-      key: "userCount",
-    },
+    { title: "ID", dataIndex: "id", key: "id" },
+    { title: "Project Name", dataIndex: "name", key: "name" },
+    { title: "Description", dataIndex: "description", key: "description" },
+    { title: "Users", dataIndex: "user_count", key: "user_count" },
   ];
 
   return (
@@ -100,18 +86,22 @@ const Main = () => {
         </div>
 
         <div className="projects-container">
-          {projects.length > 0 ? (
+          {loading ? (
+            <div style={{ textAlign: "center" }}>Loading...</div>
+          ) : projects.length > 0 ? (
             <Table
               dataSource={projects}
               columns={columns}
               rowKey="id"
               pagination={false}
               onRow={(record) => ({
-                onClick: () => navigate(`/project/${record.id}`), // Переход на страницу проекта
+                onClick: () => navigate(`/project/${record.id}`),
               })}
             />
           ) : (
-            <Empty description="No Projects Found" />
+            <div className="empty-container">
+              <Empty description="No Projects Found" />
+            </div>
           )}
         </div>
 

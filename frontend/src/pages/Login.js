@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Input, Button, Typography, message } from "antd"; // Импортируем message
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Импортируем axios
 import "../styles/Login.css";
 
 const { Title, Text } = Typography;
@@ -9,17 +10,42 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Login values:", values);
     setLoading(true);
 
-    // Тут будет вызов к бэкенду
+    try {
+      // Отправка запроса к бэкенду для получения токенов
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/v1/AuthService/login/",
+        {
+          email: values.email,
+          password: values.password,
+        }
+      );
 
-    // Временное перенаправление на главную страницу
-    setTimeout(() => {
+      const { access_token, refresh_token } = response.data;
+
+      // Сохранение токенов в localStorage
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
+      localStorage.setItem("Email", values.email);
+
+      // Временное перенаправление на главную страницу
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/"); // Перенаправление на главную страницу
+      }, 1000);
+    } catch (error) {
+      // Обработка ошибок
+      const errorMessage = error.response?.data?.detail || "An error occurred";
+      console.error("Login error:", errorMessage);
+
+      // Отображаем ошибку с помощью message из antd
+      message.error(errorMessage);
+
       setLoading(false);
-      navigate("/");
-    }, 1000);
+    }
   };
 
   return (
@@ -35,16 +61,16 @@ const Login = () => {
             requiredMark={false}
           >
             <Form.Item
-              name="username"
-              label="Username"
+              name="email"
+              label="Email"
               rules={[
                 {
                   required: true,
-                  message: "Please enter your username or email!",
+                  message: "Please enter your email!",
                 },
               ]}
             >
-              <Input placeholder="Enter your username or email" />
+              <Input placeholder="Enter your email" />
             </Form.Item>
 
             <Form.Item

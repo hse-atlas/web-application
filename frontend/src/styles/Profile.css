@@ -56,25 +56,25 @@
     font-size: 16px;
   }
   
-  button {
+  .edit-profile-button {
     width: 100%;
   }
   
   /* Стили для кнопки "Edit Profile" */
-  button[type="primary"] {
+  .edit-profile-button[type="primary"] {
     background-color: #243168;
     border-color: #243168;
     color: #ffffff;
     font-weight: bold;
   }
   
-  button[type="primary"]:hover {
+  .edit-profile-button[type="primary"]:hover {
     background-color: #1a2540;
     border-color: #1a2540;
   }
   
   /* Добавление отступов и рамки для карточки */
-  .profile-card .ant-card-body {
+  .profile-card {
     padding: 20px;
   }
   

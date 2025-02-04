@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Input, Button, Typography, message } from "antd"; // Импортируем message для уведомлений
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // импортируем axios
 import "../styles/Register.css";
 
 const { Title, Text } = Typography;
@@ -8,18 +9,43 @@ const { Title, Text } = Typography;
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(""); // создаем состояние для ошибки
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Register values:", values);
     setLoading(true);
 
-    // Тут будет вызов к бэкенду для регистрации
+    try {
+      // Отправляем данные на сервер
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/v1/AuthService/register/",
+        {
+          login: values.username,
+          email: values.email,
+          password: values.password,
+        }
+      );
+      console.log("Registration successful:", response.data);
+      localStorage.setItem("Login", values.login);
 
-    // Временное перенаправление на страницу входа
-    setTimeout(() => {
+      // Временное перенаправление на страницу входа после успешной регистрации
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/login"); // Перенаправление на страницу входа
+      }, 1000);
+    } catch (error) {
+      // Проверяем наличие сообщения об ошибке
+      const errorMessage = error.response?.data?.detail || "An error occurred";
+      console.error("Registration error:", errorMessage);
+
+      // Устанавливаем ошибку в состояние для отображения на фронте
+      setErrorMessage(errorMessage); // Например, у вас может быть состояние для ошибки
+
+      // Отображаем сообщение об ошибке
+      message.error(errorMessage); // Показываем всплывающее сообщение с ошибкой
+
       setLoading(false);
-      navigate("/");
-    }, 1000);
+    }
   };
 
   return (
@@ -47,10 +73,7 @@ const Register = () => {
               name="email"
               label="Email"
               rules={[
-                {
-                  required: true,
-                  message: "Please enter your email!",
-                },
+                { required: true, message: "Please enter your email!" },
                 {
                   type: "email",
                   message: "Please enter a valid email address!",

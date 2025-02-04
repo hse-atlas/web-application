@@ -13,9 +13,8 @@ import "../styles/Profile.css";
 
 // Константа с данными пользователя
 const userData = {
-  name: "John Doe",
-  username: "@johndoe",
-  email: "john.doe@example.com",
+  login: localStorage.getItem("Login"),
+  email: localStorage.getItem("Email"),
   role: "Admin",
 };
 
@@ -40,7 +39,7 @@ const Profile = () => {
         ></Button>
 
         {/* Используем данные из константы */}
-        <UserHeader name={userData.name} username={userData.username} />
+        <UserHeader name={userData.login} />
 
         <Divider />
 
@@ -58,6 +57,7 @@ const Profile = () => {
         <Divider />
 
         <Button
+          className="edit-profile-button"
           type="primary"
           icon={<EditOutlined />}
           block
