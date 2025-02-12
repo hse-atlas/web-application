@@ -15,7 +15,6 @@
 
    ```bash
    git clone https://github.com/hse-atlas/web-application.git
-   cd web-application/frontend
    ```
 
 2. Установите зависимости:
@@ -67,7 +66,7 @@ frontend/
 
 - **React** — для построения пользовательского интерфейса
 - **Ant Design** — для компонентов UI
-- **React Router** — для маршрутизации
+- **React Router** — для маршрутизации 
 - **CSS** — для стилизации приложения
 - **Normalize.css** — для нормализации стилей браузера
 
