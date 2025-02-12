@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Typography, message } from "antd"; // Импортируем message для уведомлений
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios"; // импортируем axios
 import "../styles/Register.css";
 
@@ -10,6 +10,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(""); // создаем состояние для ошибки
+  const { id } = useParams();
 
   const onFinish = async (values) => {
     console.log("Register values:", values);
@@ -18,7 +19,7 @@ const Register = () => {
     try {
       // Отправляем данные на сервер
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/AuthService/register/",
+        `http://127.0.0.1:9000/api/v1/AuthService/user_register/${id}`,
         {
           login: values.username,
           email: values.email,
@@ -31,7 +32,7 @@ const Register = () => {
       // Временное перенаправление на страницу входа после успешной регистрации
       setTimeout(() => {
         setLoading(false);
-        navigate("/login"); // Перенаправление на страницу входа
+        navigate(`/userLogin/${id}`); // Перенаправление на страницу входа
       }, 1000);
     } catch (error) {
       // Проверяем наличие сообщения об ошибке
@@ -122,7 +123,8 @@ const Register = () => {
 
           <div className="login-link">
             <Text>
-              Already have an account? <a href="/login">Login</a>
+              Already have an account?{" "}
+              <a href={`${window.location.origin}/userLogin/${id}`}>Login</a>
             </Text>
           </div>
         </div>

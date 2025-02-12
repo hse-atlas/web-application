@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Modal, Form, Input, Button, Space, Popconfirm, message } from "antd";
+import { Modal, Form, Input, Button, Space, message } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditProjectModal = ({ visible, onCancel, onSave, initialValues }) => {
@@ -16,19 +16,22 @@ const EditProjectModal = ({ visible, onCancel, onSave, initialValues }) => {
   const handleSave = async () => {
     try {
       const values = await form.validateFields();
-      const email = localStorage.getItem("Email");
-      const payload = { ...values, email };
+      const owner_id = localStorage.getItem("Admin_id"); // Извлекаем owner_id из localStorage
+      const payload = { ...values };
 
       console.log("Отправляемые данные при обновлении:", payload);
       console.log("Отправляемый запрос на изменение проекта с ID:", id);
 
-      const response = await fetch(`http://127.0.0.1:90/projects/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        `http://127.0.0.1:90/projects/owner/${id}?owner_id=${owner_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update project");
@@ -37,26 +40,6 @@ const EditProjectModal = ({ visible, onCancel, onSave, initialValues }) => {
       message.success("Project updated successfully");
       onSave(payload);
       onCancel();
-    } catch (error) {
-      message.error(error.message);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      console.log("Отправляемый запрос на удаление проекта с ID:", id);
-
-      const response = await fetch(`http://127.0.0.1:90/projects/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete project");
-      }
-
-      message.success("Project deleted successfully");
-      onCancel();
-      navigate("/");
     } catch (error) {
       message.error(error.message);
     }
@@ -92,20 +75,23 @@ const EditProjectModal = ({ visible, onCancel, onSave, initialValues }) => {
         >
           <Input.TextArea placeholder="Enter project description" />
         </Form.Item>
+
+        <Form.Item
+          name="url"
+          label="Project URL"
+          rules={[
+            {
+              type: "url",
+              message: "Please enter a valid URL!",
+            },
+          ]}
+        >
+          <Input placeholder="Enter project URL" />
+        </Form.Item>
       </Form>
 
       <div style={{ textAlign: "right", marginTop: "16px" }}>
         <Space>
-          <Popconfirm
-            title="Are you sure to delete this project?"
-            onConfirm={handleDelete}
-            okText="Yes"
-            cancelText="No"
-            placement="topRight"
-          >
-            <Button danger>Delete Project</Button>
-          </Popconfirm>
-
           <Button onClick={onCancel}>Cancel</Button>
           <Button type="primary" onClick={handleSave}>
             Save Changes

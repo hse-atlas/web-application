@@ -9,25 +9,20 @@ const AddProject = ({ visible, onCancel, onAdd }) => {
     form
       .validateFields()
       .then((values) => {
-        // Извлекаем email из localStorage
-        const email = localStorage.getItem("Email");
-        if (!email) {
-          message.error("User email not found.");
+        const owner_id = Number(localStorage.getItem("Admin_id")); // Преобразуем в число
+        if (!owner_id) {
+          message.error("Admin ID not found or invalid.");
           return;
         }
 
-        // Отправляем запрос на создание проекта
         axios
-          .post(
-            "http://127.0.0.1:90/projects", // Адрес API
-            {
-              name: values.name,
-              description: values.description,
-              email: email, // Отправляем email
-            }
-          )
+          .post("http://127.0.0.1:90/projects", {
+            name: values.name,
+            description: values.description,
+            owner_id: owner_id,
+            url: values.URL || null, // URL может быть пустым
+          })
           .then((response) => {
-            // Если проект создан успешно, вызываем onAdd и сбрасываем форму
             onAdd(response.data);
             form.resetFields();
             message.success("Project added successfully!");
@@ -54,10 +49,7 @@ const AddProject = ({ visible, onCancel, onAdd }) => {
           name="name"
           label="Project Name"
           rules={[
-            {
-              required: true,
-              message: "Please enter the project name!",
-            },
+            { required: true, message: "Please enter the project name!" },
           ]}
         >
           <Input placeholder="Enter project name" />
@@ -74,6 +66,10 @@ const AddProject = ({ visible, onCancel, onAdd }) => {
           ]}
         >
           <Input.TextArea placeholder="Enter project description" />
+        </Form.Item>
+
+        <Form.Item name="URL" label="Project URL">
+          <Input placeholder="Enter project URL (optional)" />
         </Form.Item>
       </Form>
 

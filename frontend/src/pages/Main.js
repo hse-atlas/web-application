@@ -16,12 +16,13 @@ const Main = () => {
   const navigate = useNavigate();
 
   const userEmail = localStorage.getItem("Email");
+  const owner_id = localStorage.getItem("Admin_id");
   const userRole = "Admin";
 
   const fetchProjects = () => {
     setLoading(true);
     axios
-      .get(`http://127.0.0.1:90/projects/me?email=${userEmail}`)
+      .get(`http://127.0.0.1:90/projects/owner/${owner_id}`)
       .then((response) => {
         setProjects(response.data);
       })
@@ -39,7 +40,7 @@ const Main = () => {
 
   useEffect(() => {
     fetchProjects();
-  }, [userEmail]);
+  }, [owner_id]);
 
   const handleAddProjectClick = () => {
     setIsModalVisible(true);
@@ -55,7 +56,11 @@ const Main = () => {
   };
 
   const columns = [
-    { title: "ID", dataIndex: "id", key: "id" },
+    {
+      title: "№",
+      key: "index",
+      render: (_, __, index) => index + 1,
+    },
     { title: "Project Name", dataIndex: "name", key: "name" },
     { title: "Description", dataIndex: "description", key: "description" },
     { title: "Users", dataIndex: "user_count", key: "user_count" },

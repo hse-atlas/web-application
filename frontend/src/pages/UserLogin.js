@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Typography, message } from "antd"; // Импортируем message
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios"; // Импортируем axios
 import "../styles/Login.css";
 
@@ -9,42 +9,40 @@ const { Title, Text } = Typography;
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const onFinish = async (values) => {
     console.log("Login values:", values);
     setLoading(true);
 
     try {
-      // Отправка запроса к бэкенду для получения токенов
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/AuthService/login/",
+        `http://127.0.0.1:9000/api/v1/AuthService/user_login/${id}`,
         {
           email: values.email,
           password: values.password,
         }
       );
 
-      const { access_token, refresh_token, id } = response.data;
-
-      // Сохранение токенов в localStorage
+      const { access_token, refresh_token } = response.data;
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("refresh_token", refresh_token);
-      localStorage.setItem("Email", values.email);
-      localStorage.setItem("Admin_id", id);
 
-      // Временное перенаправление на главную страницу
-      setTimeout(() => {
-        setLoading(false);
-        navigate("/"); // Перенаправление на главную страницу
-      }, 1000);
+      // Запрашиваем данные проекта, чтобы получить redirect_url
+      const projectResponse = await axios.get(
+        `http://127.0.0.1:90/projects/getURL/${id}`
+      );
+
+      console.log("URL для перенаправления:", projectResponse.data);
+      const redirectUrl = projectResponse.data; // || "/";
+      // Преобразуем URL в валидный объект URL (если нужно, чтобы гарантировать корректность)
+      const validRedirectUrl = new URL(redirectUrl).href; // Преобразуем в валидный URL
+
+      // Перенаправляем на правильный URL
+      window.location.href = validRedirectUrl; // Используем window.location.href для перенаправления
     } catch (error) {
-      // Обработка ошибок
-      const errorMessage = error.response?.data?.detail || "An error occurred";
-      console.error("Login error:", errorMessage);
-
-      // Отображаем ошибку с помощью message из antd
-      message.error(errorMessage);
-
+      message.error("Login failed");
+    } finally {
       setLoading(false);
     }
   };
@@ -93,7 +91,10 @@ const Login = () => {
 
           <div className="register-link">
             <Text>
-              Don't have an account? <a href="/register">Register</a>
+              Don't have an account?{" "}
+              <a href={`${window.location.origin}/userRegister/${id}`}>
+                Register
+              </a>
             </Text>
           </div>
         </div>

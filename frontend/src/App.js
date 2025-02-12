@@ -6,6 +6,8 @@ import Main from "./pages/Main";
 import ProfileSettings from "./pages/ProfileSettings";
 import Profile from "./pages/Profile";
 import ProjectDetails from "./pages/ProjectDetails";
+import UserRegister from "./pages/UserRegister";
+import UserLogin from "./pages/UserLogin";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<ProfileSettings />} />
+        <Route path="/userRegister/:id" element={<UserRegister />} />
+        <Route path="/userLogin/:id" element={<UserLogin />} />
       </Routes>
     </Router>
   );
